@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Scroll up
+if [[ "${BLOCK_BUTTON}" -eq 4 ]]; then
+  xbacklight -inc 10
+# Scroll down
+elif [[ "${BLOCK_BUTTON}" -eq 5 ]]; then
+  xbacklight -dec 10
+fi
+
+URGENT_VALUE=10
+
+Brightness=$(xbacklight -get)
+
+if [[ "${Brightness}" -le 0 ]]; then
+  exit
+fi
+
+percent=$(echo "scale=0;${Brightness}" | bc -l)
+
+percent=${percent%.*}
+
+if [[ "${percent}" -le 0 ]]; then
+  exit
+fi
+
+echo -e "\uf185  ${percent}%"
+echo ""

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+FORMAT="${BLOCK_INSTANCE:-%H:%M:%S}"
+DATETIME=$(date "+${FORMAT}")
+
+echo -e "\uf017  ${DATETIME}"
+echo ""

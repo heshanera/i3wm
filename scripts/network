@@ -1,0 +1,58 @@
+#!/bin/bash
+
+INTERFACE="${BLOCK_INSTANCE:-wlp3s0}"
+
+#------------------------------------------------------------------------
+
+# As per #36 -- It is transparent: e.g. if the machine has no battery or wireless
+# connection (think desktop), the corresponding block should not be displayed.
+[[ ! -d /sys/class/net/${INTERFACE}/wireless ]] ||
+    [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]] && exit
+
+#------------------------------------------------------------------------
+
+QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+
+SLP=5
+LINE=`grep $INTERFACE /proc/net/dev | sed s/.*://`;
+RECEIVED1=`echo $LINE | awk '{print $1}'`
+TRANSMITTED1=`echo $LINE | awk '{print $9}'`
+TOTAL=$(($RECEIVED1+$TRANSMITTED1))
+
+sleep $SLP
+
+LINE=`grep $INTERFACE /proc/net/dev | sed s/.*://`;
+RECEIVED2=`echo $LINE | awk '{print $1}'`
+TRANSMITTED2=`echo $LINE | awk '{print $9}'`
+SPEED=$((($RECEIVED2+$TRANSMITTED2-$TOTAL)/$SLP))
+INSPEED=$((($RECEIVED2-$RECEIVED1)/$SLP))
+OUTSPEED=$((($TRANSMITTED2-$TRANSMITTED1)/$SLP))
+
+ESSID=$(iwgetid -r)
+
+echo -ne "<span color='#32CD32'>\uf1eb </span>"
+echo -ne "<span color='#FFFFFF'>  $ESSID</span>"
+echo -ne "<span color='#FFFFFF'>  $QUALITY% | </span>"
+echo -ne "<span color='#32CD32'>\uf063</span>"
+echo -ne "<span color='#FFFFFF'>  $(($INSPEED/1024)) KB/s | </span>"
+echo -ne "<span color='#FF3333'>\uf062</span>"
+echo -ne "<span color='#FFFFFF'>  $(($OUTSPEED/1024)) KB/s </span>"
+
+#echo -ne "\uf1eb  $QUALITY% | "
+#echo -n ""
+#echo -ne "\uf063 $(($INSPEED/1024)) KB/s | "
+#echo -n ""
+#echo -ne "\uf062  $(($OUTSPEED/1024)) KB/s"
+#echo -n ""
+
+# color
+#if [[ $QUALITY -ge 80 ]]; then
+#    echo "#00FF00"
+#elif [[ $QUALITY -ge 60 ]]; then
+#    echo "#FFF600"
+#elif [[ $QUALITY -ge 40 ]]; then
+#    echo "#FFAE00"
+#else
+#    echo "#FF0000"
+#fi
+
