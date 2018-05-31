@@ -14,7 +14,7 @@ elif [[ "${BATTERY_STATE}" = "Charging" ]]; then
   echo -e "\uf240 ${BATTERY_POWER}%+"
   echo ""
 elif [[ "${BATTERY_STATE}" = "Discharging" ]]; then
-  echo -e "  ${BATTERY_POWER}%-"
+  echo -e "\uf241 ${BATTERY_POWER}%-"
   echo ""
 else
   echo -e "\uf240  ${BATTERY_POWER}%"
