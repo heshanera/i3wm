@@ -28,15 +28,15 @@ SPEED=$((($RECEIVED2+$TRANSMITTED2-$TOTAL)/$SLP))
 INSPEED=$((($RECEIVED2-$RECEIVED1)/$SLP))
 OUTSPEED=$((($TRANSMITTED2-$TRANSMITTED1)/$SLP))
 
-ESSID=$(iwgetid -r)
+ESSID=$(iw dev $INTERFACE link | awk '/SSID/{print $2}')
 
-echo -ne "<span color='#32CD32'>\uf1eb </span>"
-echo -ne "<span color='#FFFFFF'>  $ESSID</span>"
-echo -ne "<span color='#FFFFFF'>  $QUALITY% | </span>"
-echo -ne "<span color='#32CD32'>\uf063</span>"
-echo -ne "<span color='#FFFFFF'>  $(($INSPEED/1024)) KB/s | </span>"
+echo -ne "<span color='#32CD32'> \uf1eb </span>"
+echo -ne "<span color='#FFFFFF'> $ESSID </span>"
+echo -ne "<span color='#FFFFFF'> $QUALITY%  | </span>"
+echo -ne "<span color='#32CD32'> \uf063</span>"
+echo -ne "<span color='#FFFFFF'>  $(($INSPEED/1024)) KB/s  |  </span>"
 echo -ne "<span color='#FF3333'>\uf062</span>"
-echo -ne "<span color='#FFFFFF'>  $(($OUTSPEED/1024)) KB/s </span>"
+echo -e "<span color='#FFFFFF'>  $(($OUTSPEED/1024)) KB/s </span>"
 
 #echo -ne "\uf1eb  $QUALITY% | "
 #echo -n ""

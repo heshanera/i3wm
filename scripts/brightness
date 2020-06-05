@@ -20,8 +20,8 @@ percent=$(echo "scale=0;${Brightness}" | bc -l)
 
 percent=${percent%.*}
 
-if [[ "${percent}" -le 0 ]]; then
-  exit
+if [[ "${percent}" -le 25 ]]; then
+  xbacklight -set 25
 fi
 
 echo -e "\uf185  ${percent}%"
