@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# memory status
+MEMORY=$(vmstat -sS M)
+# total memory
+MEMORY_TOTAL=$(echo "$MEMORY" | awk 'NR==1 {print ($1)/1024}')
+# free memory
+MEMORY_FREE=$(echo "$MEMORY" | awk 'NR==5 {print ($1)/1024}')
+# used memory
+MEMORY_USAGE=$(echo "$MEMORY_TOTAL-$MEMORY_FREE" | bc)
+
+echo "  $(printf "%.2f" $MEMORY_USAGE) GB"

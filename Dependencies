@@ -1,15 +1,15 @@
 # i3blocks
 # dmenu
 # perl-anyevent-i3
-# gnome-terminal
 
 
 Scripts:
   # battery: acpi
-  # brightness: xbacklight
-  # volume: alsa-utils
+  # cpu: sysstat
+
 
 Fonts:
   # noto-fonts
   # FontAwesome
+
 
